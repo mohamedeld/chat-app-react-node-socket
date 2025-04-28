@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
+
 dotenv.config();
 const app = express();
 import authRoutes from "./routes/authRoutes";
@@ -11,7 +13,7 @@ import userRoutes from "./routes/userRoutes";
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json())
-
+app.use(cors());
 app.use("/api/auth",authRoutes);
 app.use("/api/message",messageRoutes);
 app.use("/api/user",userRoutes)

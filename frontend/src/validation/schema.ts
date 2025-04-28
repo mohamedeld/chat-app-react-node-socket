@@ -12,5 +12,14 @@ export const registerSchema = z.object({
     username:z.string({message:"user name is required"}),
     email:z.string({message:"Email is required"}).email({message:"Invalid email"}),
     password:z.string({message:"Password is required"}).min(6,{message:"Password must be at least 6 characters long"}),
-    gender:z.enum(['Male','Female'])
-})
+    gender:z.enum(['Male','Female']),
+    confirmPassword:z.string({message:"Confirm password is required"}).min(6,{message:"Password must be at least 6 characters long"})
+}).superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords did not match",
+        path: ['confirmPassword']
+      });
+    }
+  });
